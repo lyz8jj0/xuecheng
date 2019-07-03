@@ -60,6 +60,10 @@
         this.params.page = page;
         this.query();
       }
+    },
+    mounted() {
+      //当DOM元素渲染完成后调用query
+      this.query()
     }
   }
 </script>
