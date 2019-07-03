@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="app">
+    <!--相当于MVVM的view视图-->
+    <!--{{name}}-->
+    <span v-text="name"></span>
+    <input type="text" v-model="num1">
+    <input type="text" v-model="num2">
+    <span v-text="result"></span>
+    <button v-on:click="change">计算</button>
+    <!--<div v-bind:style="{fontSize:size+'px'}">javaEE培训</div>-->
+</div>
+</body>
+</html>
