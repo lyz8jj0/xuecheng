@@ -1,7 +1,22 @@
 <template>
   <!--编写页面静态部分, 即view部分-->
   <div>
-    <el-button type="primary" v-on:click="query" size="small">查询</el-button>
+    <!--查询表单-->
+    <el-form :model="params">
+      <el-select v-model="params.siteId" placeholder="请选择站点">
+        <el-option
+          v-for="item in siteList"
+          :key="item.siteId"
+          :label="item.siteName"
+          :value="item.siteId">
+        </el-option>
+      </el-select>
+      页面别名：
+      <el-input v-model="params.pageAliase" style="width: 100px"></el-input>
+      <el-button type="primary" v-on:click="query" size="small">查询</el-button>
+    </el-form>
+
+
     <el-table
       :data="list"
       stripe
@@ -38,18 +53,21 @@
   export default {
     data() {
       return {
+        siteList: [],//站点列表
         list: [],
         total: 50,
         params: {
           page: 1,
-          size: 10
+          size: 10,
+          siteId: '',
+          pageAliase: ''
         }
       }
     },
     methods: {
       query: function () {
         // alert('查询')
-        cmsApi.page_list(this.params.page, this.params.size).then((res) => {
+        cmsApi.page_list(this.params.page, this.params.size,this.params).then((res) => {
           //将res结果数据赋值给数据模型对象
           this.list = res.queryResult.list;
           this.total = res.queryResult.total;
@@ -63,7 +81,18 @@
     },
     mounted() {
       //当DOM元素渲染完成后调用query
-      this.query()
+      this.query();
+      //初始化站点列表
+      this.siteList = [
+        {
+          siteId: '5a751fab6abb5044e0d19ea1',
+          siteName: '门户主站'
+        },
+        {
+          siteId: '102',
+          siteName: '测试站'
+        }
+      ]
     }
   }
 </script>
