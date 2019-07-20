@@ -11,6 +11,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -60,11 +61,23 @@ public class EsCourseService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //搜索条件
         //根据关键字搜索
-        if (StringUtils.isNoneEmpty(courseSearchParam.getKeyword())) {
+        if (StringUtils.isNotEmpty(courseSearchParam.getKeyword())) {
             MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(courseSearchParam.getKeyword(), "name", "description", "teachplan")
                     .minimumShouldMatch("70%")
                     .field("name", 10);
             boolQueryBuilder.must(multiMatchQueryBuilder);
+        }
+        if(StringUtils.isNotEmpty(courseSearchParam.getMt())){
+            //根据一级分类
+            boolQueryBuilder.filter(QueryBuilders.termQuery("mt",courseSearchParam.getMt()));
+        }
+        if (StringUtils.isNotEmpty(courseSearchParam.getSt())) {
+            //根据二级分类
+            boolQueryBuilder.filter(QueryBuilders.termQuery("st",courseSearchParam.getSort()));
+        }
+        if (StringUtils.isNotEmpty(courseSearchParam.getGrade())) {
+            //根据难度等级
+            boolQueryBuilder.filter(QueryBuilders.termQuery("grade",courseSearchParam.getGrade()));
         }
 
         searchSourceBuilder.query(boolQueryBuilder);
