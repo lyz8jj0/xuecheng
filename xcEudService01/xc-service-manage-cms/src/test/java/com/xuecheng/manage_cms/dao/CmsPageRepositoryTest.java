@@ -1,6 +1,9 @@
 package com.xuecheng.manage_cms.dao;
 
 import com.xuecheng.framework.domain.cms.CmsPage;
+import com.xuecheng.framework.exception.ExceptionCast;
+import com.xuecheng.framework.exception.ExceptionCatch;
+import com.xuecheng.framework.model.response.CommonCode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,4 +90,5 @@ public class CmsPageRepositoryTest {
         List<CmsPage> content = all.getContent();
         System.out.println(content);
     }
+
 }
