@@ -85,7 +85,7 @@ public class PageService {
         //根据页面名称, 站点id, 页面webpath去cms_page集合, 如果查到说明页面已经存在, 如果查询不到再继续添加
         CmsPage cmsPage1 = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
         if (cmsPage1 != null) {
-            ExceptionCast.cast(CmsCode.CMS_ADDPAGE_EXISTSNAME);
+            ExceptionCast.cast(CommonCode.FAIL);
         }
         //调用dao新增页面
         cmsPage.setPageId(null);
