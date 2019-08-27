@@ -4,6 +4,9 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+
 /**
  * rabbitmq的入门程序
  * <p>
@@ -26,11 +29,12 @@ public class Producer01 {
         connectionFactory.setVirtualHost("/");
 
         Connection connection = null;
+        Channel channel=null;
         try {
             //建立新连接
             connection = connectionFactory.newConnection();
             //创建会话通道, 生产者和mq服务所有通信都在channel通道中完成
-            Channel channel = connection.createChannel();
+             channel = connection.createChannel();
             //声明队列, 如果队列在mq中没有则要创建
             //参数: String queue, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments
             /**
@@ -59,7 +63,21 @@ public class Producer01 {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            //关闭连接
+            //先关闭通道
+            try {
+                channel.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TimeoutException e) {
+                e.printStackTrace();
+            }
 
+            try {
+                connection.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
