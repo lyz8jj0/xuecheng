@@ -68,7 +68,7 @@ public class FreemarkerController {
         ResponseEntity<Map> forEntity = restTemplate.getForEntity("http://localhost:31001/cms/config/getmodel/5a791725dd573c3574ee333f", Map.class);
         Map body = forEntity.getBody();
         //设置模型数据
-            map.putAll(body);
+        map.putAll(body);
         return "index_banner";
     }
 }
