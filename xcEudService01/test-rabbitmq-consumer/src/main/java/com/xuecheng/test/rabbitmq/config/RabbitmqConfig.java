@@ -1,4 +1,4 @@
-package con.xuecheng.test.rabbitmq.config;
+package com.xuecheng.test.rabbitmq.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -48,7 +48,7 @@ public class RabbitmqConfig {
     //绑定交换机和队列 ROUTINGKEY_SMS
     @Bean
     public Binding BINDING_QUEUE_INFORM_SMS(@Qualifier(QUEUE_INFORM_SMS) Queue queue,
-                                              @Qualifier(EXCHANGE_TOPICS_INFORM) Exchange exchange) {
+                                            @Qualifier(EXCHANGE_TOPICS_INFORM) Exchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(ROUTINGKEY_SMS).noargs();
     }
 }
