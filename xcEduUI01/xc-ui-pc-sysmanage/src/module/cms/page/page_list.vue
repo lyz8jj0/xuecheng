@@ -50,7 +50,6 @@
           </el-button>
           <el-button @click="preview(page.row.pageId)" type="text" size="small">页面预览</el-button>
           <el-button size="small" type="primary" plain @click="postPage(page.row.pageId)">发布 </el-button>        </template>
-
       </el-table-column>
     </el-table>
     <el-pagination
