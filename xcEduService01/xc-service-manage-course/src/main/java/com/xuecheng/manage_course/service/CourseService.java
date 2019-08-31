@@ -60,11 +60,11 @@ public class CourseService {
         //将页面提交的teachplan信息拷贝到teachplan对象中
         BeanUtils.copyProperties(teachplan, teachplanNew);
         teachplanNew.setParentid(parentid);
-        teachplan.setCourseid(courseid);
+        teachplanNew.setCourseid(courseid);
         if (grade.equals("1")) {
-            teachplan.setGrade("2"); //级别, 根据父结点的级别来设置
+            teachplanNew.setGrade("2"); //级别, 根据父结点的级别来设置
         } else {
-            teachplan.setGrade("3");
+            teachplanNew.setGrade("3");
         }
         teachplanRepository.save(teachplanNew);
         return new ResponseResult(CommonCode.SUCCESS);
