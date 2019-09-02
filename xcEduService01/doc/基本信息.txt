@@ -1,0 +1,6 @@
+mysql
+    账号: root
+    密码: 123456
+mongodb
+    账号: root
+    密码: 123
