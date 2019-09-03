@@ -13,6 +13,7 @@ import org.csource.fastdfs.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import sun.swing.FilePane;
 
@@ -38,7 +39,7 @@ public class FileSystemService {
     FileSystemRepository fileSystemRepository;
 
     //上传文件
-    public UploadFileResult upload(MultipartFile multipartFile,
+    public UploadFileResult upload(@RequestParam("file") MultipartFile multipartFile,
                                    String filetag,
                                    String businesskey,
                                    String metadata) {

@@ -30,4 +30,10 @@ public class CourseController implements CourseControllerApi {
     public ResponseResult addTeachplan(@RequestBody Teachplan teachplan) {
         return courseService.addTeanchplan(teachplan);
     }
+
+    @Override
+    @PostMapping("/coursepic/add")
+    public ResponseResult addCoursePic(@RequestParam("courseId") String courseId, @RequestParam("pic") String pic) {
+        return courseService.addCoursePic(courseId, pic);
+    }
 }

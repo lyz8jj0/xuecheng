@@ -1,12 +1,14 @@
 package com.xuecheng.manage_course.service;
 
 import com.xuecheng.framework.domain.course.CourseBase;
+import com.xuecheng.framework.domain.course.CoursePic;
 import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_course.dao.CourseBaseRepository;
+import com.xuecheng.manage_course.dao.CoursePicRepository;
 import com.xuecheng.manage_course.dao.TeachplanMapper;
 import com.xuecheng.manage_course.dao.TeachplanRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +35,9 @@ public class CourseService {
 
     @Autowired
     CourseBaseRepository courseBaseRepository;
+
+    @Autowired
+    CoursePicRepository coursePicRepository;
 
     //课程计划查询
     public TeachplanNode findTeachplanList(String courseId) {
@@ -93,5 +98,24 @@ public class CourseService {
 
         //返回根结点id
         return teachplanList.get(0).getId();
+    }
+
+    //向课程管理数据库添加课程与图片的关联信息
+    @Transactional
+    public ResponseResult addCoursePic(String courseId, String pic) {
+        //课程图片信息
+        CoursePic coursePic = null;
+        //查询课程图片
+        Optional<CoursePic> optional = coursePicRepository.findById(courseId);
+        if (optional.isPresent()) {
+            coursePic = optional.get();
+        }
+        if (coursePic == null) {
+            coursePic = new CoursePic();
+        }
+        coursePic.setPic(pic);
+        coursePic.setCourseid(courseId);
+        coursePicRepository.save(coursePic);
+        return new ResponseResult(CommonCode.SUCCESS);
     }
 }

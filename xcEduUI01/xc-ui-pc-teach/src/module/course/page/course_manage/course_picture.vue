@@ -9,7 +9,8 @@
       :limit="picmax"
       :on-exceed="rejectupload"
       :before-remove="handleRemove"
-      :data="uploadval">
+      :data="uploadval"
+      name="file">
       <i class="el-icon-plus"></i>
     </el-upload>
   </div>
@@ -27,7 +28,7 @@
         dialogImageUrl: '',
         dialogVisible: false,
         fileList:[],
-        uploadval:{filetag:"course"},//上传提交的额外的数据 ，将uploadval转成key/value提交给服务器
+        uploadval:{filetag:"course",businesskey:"testbusinesskey"},//上传提交的额外的数据 ，将uploadval转成key/value提交给服务器
         imgUrl:sysConfig.imgUrl
       }
     },
