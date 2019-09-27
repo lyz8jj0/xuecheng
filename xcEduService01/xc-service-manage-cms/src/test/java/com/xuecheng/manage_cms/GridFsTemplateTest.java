@@ -33,7 +33,7 @@ public class GridFsTemplateTest {
     @Autowired
     GridFSBucket gridFSBucket;
 
-    //存文件 5d71c7c6aa169314738ea620
+    //存文件 5d71c7c6aa169314738ea620/5d8d82a3e0fbff0991a387f4
     @Test
     public void testStore() throws FileNotFoundException {
         File file = new File("/Users/lixinyu/Desktop/course.ftl");
