@@ -33,12 +33,12 @@ public class GridFsTemplateTest {
     @Autowired
     GridFSBucket gridFSBucket;
 
-    //存文件
+    //存文件 5d71c7c6aa169314738ea620
     @Test
     public void testStore() throws FileNotFoundException {
-        File file = new File("/Users/lixinyu/Desktop/index_banner.ftl");
+        File file = new File("/Users/lixinyu/Desktop/course.ftl");
         FileInputStream fileInputStream = new FileInputStream(file);
-        ObjectId objectId = gridFsTemplate.store(fileInputStream, "index_banner.ftl");
+        ObjectId objectId = gridFsTemplate.store(fileInputStream, "course.ftl");
         System.out.println(objectId);
 
     }
