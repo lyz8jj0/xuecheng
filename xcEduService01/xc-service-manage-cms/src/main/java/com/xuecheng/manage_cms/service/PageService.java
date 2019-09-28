@@ -353,7 +353,7 @@ public class PageService {
         CmsPage cmsPage1 = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
         if (cmsPage1 != null) {
             //进行更新
-            return this.update(cmsPage.getPageId(), cmsPage);
+            return this.update(cmsPage1.getPageId(), cmsPage);
         }
         return this.add(cmsPage);
 
