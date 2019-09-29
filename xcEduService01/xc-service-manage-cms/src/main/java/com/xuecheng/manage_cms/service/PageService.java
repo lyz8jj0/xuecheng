@@ -377,7 +377,7 @@ public class PageService {
 
         //执行页面发布(先静态化,保存GridFS,向MQ发送信息)
         ResponseResult post = this.post(pageId);
-        if (post.isSuccess()) {
+        if (!post.isSuccess()) {
             ExceptionCast.cast(CommonCode.FAIL);
         }
         //拼接页面
