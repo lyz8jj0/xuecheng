@@ -73,7 +73,7 @@ public class EsCourseService {
         }
         if (StringUtils.isNotEmpty(courseSearchParam.getSt())) {
             //根据二级分类
-            boolQueryBuilder.filter(QueryBuilders.termQuery("st",courseSearchParam.getSort()));
+            boolQueryBuilder.filter(QueryBuilders.termQuery("st",courseSearchParam.getSt()));
         }
         if (StringUtils.isNotEmpty(courseSearchParam.getGrade())) {
             //根据难度等级
