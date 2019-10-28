@@ -1,6 +1,7 @@
 package com.xuecheng.manage_media.service;
 
 import com.xuecheng.framework.domain.media.MediaFile;
+import com.xuecheng.framework.domain.media.response.CheckChunkResult;
 import com.xuecheng.framework.domain.media.response.MediaCode;
 import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
@@ -35,8 +36,13 @@ public class MediaUploadService {
     //得到文件的路径
     private String getFilePath(String fileMd5, String fileExt) {
         return upload_location + fileMd5.substring(0, 1) + "/" + fileMd5.substring(1, 2) + "/" + fileMd5 + "/" + fileMd5 + '.' + fileExt;
-
     }
+
+    //得到块文件的路径
+    private String getChunkFileFolderPath(String fileMd5) {
+        return upload_location + fileMd5.substring(0, 1) + "/" + fileMd5.substring(1, 2) + "/" + fileMd5 + "/chunk/";
+    }
+
 
     /**
      * 根据文件md5得到文件路径
@@ -73,5 +79,27 @@ public class MediaUploadService {
         }
 
         return new ResponseResult(CommonCode.SUCCESS);
+    }
+
+    /**
+     * 分块检查
+     * @param fileMd5 文件的md5
+     * @param chunk  块的下标
+     * @param chunkSize 块的大小
+     * @return
+     */
+    public CheckChunkResult checkchunk(String fileMd5, Integer chunk, Integer chunkSize) {
+        //检查分块文件是否存在
+        //得到分块文件的所在目录
+        String chunkFileFolderPath = this.getChunkFileFolderPath(fileMd5);
+        //块文件
+        File chunkFile = new File(chunkFileFolderPath + chunk);
+        if (chunkFile.exists()) {
+            //块文件存在
+            return new CheckChunkResult(CommonCode.SUCCESS, true);
+        }else{
+            //块文件不存在
+            return new CheckChunkResult(CommonCode.SUCCESS, false);
+        }
     }
 }
