@@ -11,8 +11,9 @@ import jdk.management.resource.ResourceRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.*;
 import java.util.Optional;
 
 /**
@@ -83,8 +84,9 @@ public class MediaUploadService {
 
     /**
      * 分块检查
-     * @param fileMd5 文件的md5
-     * @param chunk  块的下标
+     *
+     * @param fileMd5   文件的md5
+     * @param chunk     块的下标
      * @param chunkSize 块的大小
      * @return
      */
@@ -97,9 +99,45 @@ public class MediaUploadService {
         if (chunkFile.exists()) {
             //块文件存在
             return new CheckChunkResult(CommonCode.SUCCESS, true);
-        }else{
+        } else {
             //块文件不存在
             return new CheckChunkResult(CommonCode.SUCCESS, false);
         }
+    }
+
+    public ResponseResult uploadchunk(MultipartFile file, String fileMd5, Integer chunk)  {
+        //检查分块目录, 如果不存在则要自动创建
+        //得到分块目录
+        String chunkFileFolderPath = this.getChunkFileFolderPath(fileMd5);
+        //得到分块文件路径
+        String chunkFilePath = chunkFileFolderPath + chunk;
+        File chunkFileFolder = new File(chunkFileFolderPath);
+        //如果不存在则要自动创建
+        if (!chunkFileFolder.exists()) {
+            chunkFileFolder.mkdirs();
+        }
+        //得到上传文件的输入流
+        InputStream inputStream = null;
+        FileOutputStream outputStream = null;
+        try {
+            inputStream = file.getInputStream();
+            outputStream = new FileOutputStream(new File(chunkFilePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        return null;
     }
 }
