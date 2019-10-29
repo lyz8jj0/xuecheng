@@ -25,7 +25,7 @@ public class MediaProcessTask {
 
     @Value("${xc-service-manage-media.ffmpeg-path}")
     String ffmpeg_path;
-    @Value("${xc-service-manage-media.upload-location}")
+    @Value("${xc-service-manage-media.video-location}")
     String serverPath;
 
     @Autowired
@@ -84,7 +84,7 @@ public class MediaProcessTask {
         //m3u8_name文件名称
         String m3u8_name = mediaFile.getFileId() + ".m3u8";
         //m3u8文件所在目录
-        String m3u8folder_path = serverPath + mediaFile.getFileId() + "hls/";
+        String m3u8folder_path = serverPath + mediaFile.getFilePath() + "hls/";
         HlsVideoUtil hlsVideoUtil = new HlsVideoUtil(ffmpeg_path, mp4_video_path, m3u8_name, m3u8folder_path);
         //生成m3u8和ts文件
         String tsResult = hlsVideoUtil.generateM3u8();

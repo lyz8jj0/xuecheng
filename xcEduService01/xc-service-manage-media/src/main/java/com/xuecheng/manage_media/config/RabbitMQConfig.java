@@ -33,14 +33,4 @@ public class RabbitMQConfig {
         return ExchangeBuilder.directExchange(EX_MEDIA_PROCESSTASK).durable(true).build();
     }
 
-    /**
-     * 绑定队列到交换机 .
-     * @param queue    the queue
-     * @param exchange the exchange
-     * @return the binding
-     */
-    @Bean
-    public Binding binding_queue_media_processtask(@Qualifier("queue_media_video_processtask") Queue queue, @Qualifier(EX_MEDIA_PROCESSTASK) Exchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingkey_media_video).noargs();
-    }
 }
