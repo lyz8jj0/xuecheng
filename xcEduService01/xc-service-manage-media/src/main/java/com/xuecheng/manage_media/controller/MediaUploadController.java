@@ -42,7 +42,8 @@ public class MediaUploadController implements MediaUploadControllerApi {
     }
 
     @Override
-    public ResourceRequest mergechunks(String fileMd5, String fileName, Long fileSize, String mimetype, String fileExt) {
-        return null;
+    @PostMapping("/mergechunks")
+    public ResponseResult mergechunks(String fileMd5, String fileName, Long fileSize, String mimetype, String fileExt) {
+        return mediaUploadService.mergechunks(fileMd5,fileName,fileSize,mimetype,fileExt);
     }
 }
