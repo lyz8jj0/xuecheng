@@ -7,8 +7,8 @@ import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_media.dao.MediaFileRepository;
-import jdk.management.resource.ResourceRequest;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -123,8 +123,10 @@ public class MediaUploadService {
         try {
             inputStream = file.getInputStream();
             outputStream = new FileOutputStream(new File(chunkFilePath));
+            IOUtils.copy(inputStream, outputStream);
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         } finally {
             try {
                 inputStream.close();
@@ -139,7 +141,7 @@ public class MediaUploadService {
         }
 
 
-        return null;
+        return new ResponseResult(CommonCode.SUCCESS);
     }
 
     public ResponseResult mergechunks(String fileMd5, String fileName, Long fileSize, String mimetype, String fileExt) {
@@ -174,7 +176,7 @@ public class MediaUploadService {
         MediaFile mediaFile = new MediaFile();
         mediaFile.setFileId(fileMd5);
         mediaFile.setFileOriginalName(fileName);
-        mediaFile.setFileName(fileMd5+"."+fileExt);
+        mediaFile.setFileName(fileMd5 + "." + fileExt);
         //文件路径保存相对路径
         String filePath1 = fileMd5.substring(0, 1) + "/" + fileMd5.substring(1, 2) + "/" + fileMd5 + "/" + fileMd5 + '.' + fileExt;
         mediaFile.setFilePath(filePath1);
@@ -213,6 +215,7 @@ public class MediaUploadService {
             //如果合并文件已存在则删除, 否则创建新文件
             if (mergeFile.exists()) {
                 mergeFile.delete();
+                mergeFile.createNewFile();
             } else {
                 //创建一个新文件
                 mergeFile.createNewFile();
@@ -231,20 +234,24 @@ public class MediaUploadService {
 
             //创建一个写对象
             RandomAccessFile raf_write = new RandomAccessFile(mergeFile, "rw");
+            //遍历分块文件开始合并
+            //读取文件缓冲区
             byte[] b = new byte[1024];
             for (File chunkFile : chunkFileList) {
                 RandomAccessFile raf_read = new RandomAccessFile(chunkFile, "r");
                 int len = -1;
-                while ((len = raf_read.read(b)) != 1) {
-                    raf_read.write(b, 0, len);
+                //读取分块文件
+                while ((len = raf_read.read(b)) != -1) {
+                    //向合并文件中写数据
+                    raf_write.write(b, 0, len);
                 }
                 raf_read.close();
             }
             raf_write.close();
-            return mergeFile;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
+        return mergeFile;
     }
 }
