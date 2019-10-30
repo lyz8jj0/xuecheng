@@ -1,7 +1,6 @@
 package com.xuecheng.manage_course.service;
 
 import com.alibaba.fastjson.JSON;
-import com.sun.xml.internal.fastinfoset.algorithm.BASE64EncodingAlgorithm;
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.domain.cms.response.CmsPostPageResult;
@@ -51,6 +50,9 @@ public class CourseService {
 
     @Autowired
     CmsPageClient cmsPageClient;
+
+    @Autowired
+    TeachplanMediaRepository teachplanMediaRepository;
 
     @Autowired
     CoursePubRepository coursePubRepository;
@@ -290,7 +292,7 @@ public class CourseService {
             coursePubNew = new CoursePub();
         }
         //将coursePub对象中的信息保存到coursePubNew中
-        BeanUtils.copyProperties(coursePub,coursePubNew);
+        BeanUtils.copyProperties(coursePub, coursePubNew);
         coursePubNew.setId(id);
         //时间戳,给logstash使用
         coursePubNew.setTimestamp(new Date());
@@ -346,4 +348,45 @@ public class CourseService {
         return courseBaseById;
     }
 
+    //保存课程计划与媒资文件的关联信息
+    public ResponseResult savemedia(TeachplanMedia teachplanMedia) {
+        if (teachplanMedia == null || StringUtils.isEmpty(teachplanMedia.getTeachplanId())) {
+            ExceptionCast.cast(CommonCode.INVALID_PARAM);
+        }
+        //校验课程计划是否是3级
+        //课程计划
+        String teachplanId = teachplanMedia.getTeachplanId();
+        Optional<Teachplan> optional = teachplanRepository.findById(teachplanId);
+        if (!optional.isPresent()) {
+            ExceptionCast.cast(CommonCode.INVALID_PARAM);
+        }
+
+        //查询课程计划
+        Teachplan teachplan = optional.get();
+        //取出等级
+        String grade = teachplan.getGrade();
+        if (StringUtils.isEmpty(grade) || !grade.equals("3")) {
+            //只允许选择第三级课程计划关联视频
+            ExceptionCast.cast(CourseCode.COURSE_MEDIA_TEACHPLAN_GRADEERROR);
+        }
+
+        //查询teachplanMedia
+        Optional<TeachplanMedia> mediaOptional = teachplanMediaRepository.findById(teachplanId);
+        TeachplanMedia one = null;
+        if (mediaOptional.isPresent()) {
+            one = mediaOptional.get();
+        } else {
+            one = new TeachplanMedia();
+        }
+
+        //将one保存到数据库
+        one.setCourseId(teachplan.getCourseid());
+        one.setMediaId(teachplanMedia.getMediaId());
+        one.setMediaFileOriginalName(teachplanMedia.getMediaFileOriginalName());
+        one.setMediaUrl(teachplanMedia.getMediaUrl());
+        one.setTeachplanId(teachplanId);
+        teachplanMediaRepository.save(one);
+
+        return new ResponseResult(CommonCode.SUCCESS);
+    }
 }
