@@ -54,7 +54,7 @@ public class MediaFileService {
         //条件匹配器
         ExampleMatcher exampleMatcher = ExampleMatcher.matching()
                 .withMatcher("tag", ExampleMatcher.GenericPropertyMatchers.contains())
-                .withMatcher("fileOriginName", ExampleMatcher.GenericPropertyMatchers.contains());
+                .withMatcher("fileOriginalName", ExampleMatcher.GenericPropertyMatchers.contains());
         //定义example条件对象
         Example<MediaFile> example = Example.of(mediaFile, exampleMatcher);
         //分页查询对象
