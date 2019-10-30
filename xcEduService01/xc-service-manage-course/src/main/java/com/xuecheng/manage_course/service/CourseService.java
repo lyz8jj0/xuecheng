@@ -72,7 +72,9 @@ public class CourseService {
 
     //课程计划查询
     public TeachplanNode findTeachplanList(String courseId) {
-        return teachplanMapper.selectList(courseId);
+        TeachplanNode teachplanNode = teachplanMapper.selectList(courseId);
+        System.out.println(teachplanNode);
+        return teachplanNode;
     }
 
     //添加课程计划
