@@ -32,7 +32,7 @@ public class MediaProcessTask {
     MediaFileRepository mediaFileRepository;
 
     //接收视频处理消息进行视频处理
-    @RabbitListener(queues = "${xc-service-manage-media.mq.queue-media-video-processor}")
+    @RabbitListener(queues = "${xc-service-manage-media.mq.queue-media-video-processor}",containerFactory = "customContainerFactory")
     public void receiveMediaProcessTask(String msg) {
         //1. 解析消息内容, 得到mediaId
         Map map = JSON.parseObject(msg, Map.class);
