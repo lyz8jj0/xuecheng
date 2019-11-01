@@ -560,14 +560,22 @@
 
     methods: {
       playvideo(video_src){
-        console.log(video_src)
         this.playerOptions.sources[0].src = video_src
         this.playerOptions.autoplay = true
       },
 
-      //开始学习
+      //开始学习, 获取课程计划所对应的视频地址
       study(chapter){
-
+        //get_media方法
+        courseApi.get_media(this.courseId,chapter).then(res=>{
+            //获取视频播放地址
+          let fileUrl = res.fileUrl;//相对路径
+          console.log("播放的相对路径==============="+fileUrl)
+          let videoUrl = sysConfig.videoUrl + fileUrl ;// 视频完成播放路径
+          //播放视频
+          console.log("播放的url是================"+videoUrl)
+          this.playvideo(videoUrl)
+        })
       }
 
     },
@@ -590,15 +598,36 @@
         let teachplanString = courseInfo.teachplan;
         //把串转成对象
         let teachplanObj = JSON.parse(teachplanString);
+
         //取到课程计划
         this.teachplanList = teachplanObj.children;
+        console.log(this.teachplanList)
+        //如果课程计划id不等于0,直接插入该课程计划对应的视频
+        if(this.chapter !='0'){
+          // 获取该课程计划所对应的视频
+          this.study(this.chapter)
+        }else{
+          //找到该课程和第一个课程计划id,取出该课程计划所对应的视频
+          for (var  i = 0; i < this.teachplanList.length; i++) {
+            let firstTeachplan = this.teachplanList[i];
+            if (firstTeachplan.children && firstTeachplan.children.length > 0) {
+              //取出二级课程计划中第一个
+              let secondTeachplan = firstTeachplan.children[0];
+              let teachplanId = secondTeachplan.id;
+              console.log("========"+teachplanId)
+              this.study(teachplanId)
+              return;
+            }
+          }
+        }
       })
     },
     mounted() {
 
       //播放测试
-      this.playvideo("http://video.xuecheng.com/video/hls/lucene.m3u8")
-//      this.playvideo("http://video.xuecheng.com/video/5/3/53ac4cca3ddf386c21f4f1cbb4dc9876/hls/53ac4cca3ddf386c21f4f1cbb4dc9876.m3u8")
+      // this.playvideo("http://video.xuecheng.com/video/hls/lucene.m3u8")
+     // this.playvideo("http://video.xuecheng.com/video/5/3/53ac4cca3ddf386c21f4f1cbb4dc9876/hls/53ac4cca3ddf386c21f4f1cbb4dc9876.m3u8")
+     // this.playvideo("http://video.xuecheng.com/video/c/5/c5c75d70f382e6016d2f506d134eee11/hls/c5c75d70f382e6016d2f506d134eee11.m3u8")
 
       $(function() {
         $('.active-box span').click(function() {

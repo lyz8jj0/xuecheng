@@ -22,6 +22,8 @@ public class LearningService {
 
     //获取课程学习地址(视频播放地址)
     public GetMediaResult getmedia(String courseId, String teachplanId) {
+        //校验学生的学习权限
+
         //远程调用搜索服务查询课程计划对应的媒资信息
         TeachplanMediaPub teachplanMediaPub = courseSearchClient.getmedia(teachplanId);
         if(teachplanMediaPub ==null|| StringUtils.isEmpty(teachplanMediaPub.getMediaUrl())){
