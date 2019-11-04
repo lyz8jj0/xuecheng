@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class TestJwt {
+public class  TestJwt {
 
 
     //创建jwt令牌
