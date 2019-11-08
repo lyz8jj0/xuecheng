@@ -133,7 +133,13 @@ public class AuthService {
         stringRedisTemplate.boundValueOps(key).set(content, ttl, TimeUnit.SECONDS);
         Long expire = stringRedisTemplate.getExpire(key, TimeUnit.SECONDS);
         return expire > 0;
-
+    }
+    //删除redis中的token
+    public boolean delToken(String access_token){
+        String key = "user_token:"+access_token;
+        stringRedisTemplate.delete(key);
+        Long expire = stringRedisTemplate.getExpire(key, TimeUnit.SECONDS);
+        return true;
     }
 
 

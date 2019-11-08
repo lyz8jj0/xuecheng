@@ -70,7 +70,20 @@ public class AuthController implements AuthControllerApi {
     //将令牌存储到cookie
     private void saveCookie(String token) {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+        /**
+         * 设置cookie
+         *
+         * @param response
+         * @param name     cookie 名字
+         * @param value    cookie值
+         * @param maxAge   cookie生命周期 以秒为单位
+         */
+        CookieUtil.addCookie(response, cookieDomain, "/", "uid", token, cookieMaxAge, false);
+    }
 
+    //将令牌存储到cookie
+    private void clearCookie(String token) {
+        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         /**
          * 设置cookie
          *
@@ -79,12 +92,19 @@ public class AuthController implements AuthControllerApi {
          * @param value    cookie值
          * @param maxAge   cookie生命周期 以秒为单位
          */
-        CookieUtil.addCookie(response, cookieDomain, "/", "uid", token, cookieMaxAge, false);
+        CookieUtil.addCookie(response, cookieDomain, "/", "uid", token, 0, false);
     }
 
     @Override
+    @PostMapping("/userlogout")
     public ResponseResult logout() {
-        return null;
+        //取出cookie中的用户令牌
+        String uid = getTokenFormCookie();
+        //删除redis中的token
+        boolean result = authService.delToken(uid);
+        //清除cookie
+        this.clearCookie(uid);
+        return new ResponseResult(CommonCode.SUCCESS);
     }
 
     @Override

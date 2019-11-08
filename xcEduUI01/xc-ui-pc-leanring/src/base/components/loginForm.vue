@@ -83,11 +83,11 @@ export default {
                   !this.returnUrl.includes("/userlogin")
                 ) {
                   console.log("登录成功, 跳转地址为====" + this.returnUrl);
-                  // window.location.href = this.returnUrl;
+                  window.location.href = this.returnUrl;
                 } else {
                   console.log("登录失败");
                   // 跳转到首页
-                  // window.location.href = "http://www.xuecheng.com/";
+                  window.location.href = "http://www.xuecheng.com/";
                 }
               } else {
                 if (res.message) {
