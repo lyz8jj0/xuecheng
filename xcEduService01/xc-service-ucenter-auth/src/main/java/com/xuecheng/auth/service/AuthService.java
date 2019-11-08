@@ -147,7 +147,7 @@ public class AuthService {
 
     //从redis查询令牌
     public AuthToken getUserToken(String token) {
-        String key = "user_token" + token;
+        String key = "user_token:" + token;
         //从redis中取到令牌信息
         String value = stringRedisTemplate.opsForValue().get(key);
         //转成对象
