@@ -104,7 +104,7 @@ public class AuthController implements AuthControllerApi {
         boolean result = authService.delToken(uid);
         //清除cookie
         this.clearCookie(uid);
-        return new ResponseResult(CommonCode.SUCCESS);
+         return new ResponseResult(CommonCode.SUCCESS);
     }
 
     @Override
