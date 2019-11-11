@@ -67,18 +67,21 @@ public class LoginFilter extends ZuulFilter {
         if (StringUtils.isEmpty(tokenFromCookie)) {
             //拒绝访问
             access_denied();
+            return null;
         }
         //从header中取jwt
         String jwtFromHeader = authService.getJwtFromHeader(request);
         if (StringUtils.isEmpty(jwtFromHeader)) {
             //拒绝访问
             access_denied();
+            return null;
         }
         //从redis取出jwt过期时间
         long expire = authService.getExpire(tokenFromCookie);
         if (expire < 0) {
             //拒绝访问
             access_denied();
+            return null;
         }
         return null;
     }
