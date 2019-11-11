@@ -15,6 +15,15 @@ spring:
         maxIdle: 3
         minIdle: 1
         maxWait: -1 #连接池最大等行时间 -1没有限制
+zuul:
+  routes:
+    manage-course:
+      path: /course/**
+      serviceId: xc-service-manage-course #微服务名称,网关从eureka中获取名称下的服务实例的地址
+      #url: http://www.baidu.com #也可指定url也可以是外网地址
+      strip-prefix: false #true": 代理转发时去掉前缀,false:代理转发时不去掉前缀
+      sensitiveHeaders: #默认zuul会屏蔽cookie，cookie不会传到下游服务，这里设置为空则取消默认的黑名单，如果设置了具体的头信息则不会传到下游服务
+      # ignoredHeaders: Authorization 默认为空表示不过虑任何头
 eureka:
   client:
     registerWithEureka: true #服务注册开关
