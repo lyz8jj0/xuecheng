@@ -51,7 +51,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         try {
             InputStreamReader inputStreamReader = new InputStreamReader(resource.getInputStream());
             BufferedReader br = new BufferedReader(inputStreamReader);
-            return br.lines().collect(Collectors.joining("\n"));
+             return br.lines().collect(Collectors.joining("\n"));
         } catch (IOException ioe) {
             return null;
         }
