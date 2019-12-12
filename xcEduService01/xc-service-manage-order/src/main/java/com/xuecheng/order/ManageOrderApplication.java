@@ -9,10 +9,12 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 
 @EnableDiscoveryClient
+@EnableScheduling
 @EnableFeignClients
 @EntityScan(value={"com.xuecheng.framework.domain.order","com.xuecheng.framework.domain.task"})//扫描实体类
 @ComponentScan(basePackages={"com.xuecheng.api"})//扫描接口

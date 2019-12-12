@@ -236,7 +236,7 @@ public class TestSearch {
     }
 
 
-    //根据id查询
+    //match查询
     @Test
     public void testMatchQuery() throws ParseException, IOException {
         //搜索请求对象
@@ -246,7 +246,7 @@ public class TestSearch {
         //搜索源构建对象
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
-        searchSourceBuilder.query(QueryBuilders.matchQuery("description", "spring开发框架")
+        searchSourceBuilder.query(QueryBuilders.matchQuery("description", "微服务")
                 .minimumShouldMatch("80%"));
         //设置源字段过虑, 第一个参数结果集包括哪些字段, 第二个参数表示结果集不抱括哪些字段
         searchSourceBuilder.fetchSource(new String[]{"name", "studymodel", "price", "timestamp"}, new String[]{});
