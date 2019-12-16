@@ -1,9 +1,12 @@
 package com.xuecheng.order.mq;
 
+import com.github.pagehelper.util.StringUtil;
 import com.xuecheng.framework.domain.task.XcTask;
+import com.xuecheng.order.config.RabbitMQConfig;
 import com.xuecheng.order.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -25,6 +28,12 @@ public class ChooseCourseTask {
     @Autowired
     TaskService taskService;
 
+    @RabbitListener(queues = RabbitMQConfig.XC_LEARNING_FINISHADDCHOOSECOURSE)
+    public void receiveFinishChoosecourseTask(XcTask xcTask) {
+        if (xcTask != null && StringUtil.isNotEmpty(xcTask.getId())) {
+            taskService.finishTask(xcTask.getId());
+        }
+    }
     @Scheduled(cron = "0/3 * * * * *")//每隔3秒去执行
     //定时发送加选课任务
     public void sendChooseCourseTask() {
